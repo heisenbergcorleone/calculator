@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+      <div>
+       <output id="display">Calculator 1.0</output> 
+      </div>
+      <br>
+      <div> 
+      <input type="text" id="nums">
+      </div>
+
+    <script>
+
+var elInput= document.getElementById("nums");
+var mechArray = [0,"+",0];
+var numberArray = ["1","2","3","4","5","6","7","8","9","0"];
+var symbolArray = ["+","-","/","*"];
+var result;
+
+var elOutput = document.getElementById("display");
+
+elInput.addEventListener("keyup", function(e){
+    
+
+  numberArray.some(function(no){
+    if(e.key === no){
+      mechArray[2] = elInput.value; 
+    }
+  })
+
+  symbolArray.some(function(symb) {
+
+    if(e.key === symb) {
+      cal();
+      console.log(result)
+      mechArray[0] = result;
+      mechArray[1] = e.key;
+      mechArray[2] = 0;
+      elInput.value="";
+      
+    }
+
+
+  })
+
+  /*
+  //elInput.value != "" ? elOutput.value = elInput.value : elOutput.value = e.key
+  elOutput.value = result;
+  result != undefined ? elOutput.value = result : elOutput.value = e.key
+  
+  */
+console.log(mechArray)
+
+})
+
+
+
+
+
+function cal() {
+
+    if(mechArray[1] === "+") {
+      result = parseFloat(mechArray[0])+parseFloat(mechArray[2]);
+    }
+  	else if (mechArray[1] === "-") {
+      result = parseFloat(mechArray[0])-parseFloat(mechArray[2]);
+    }
+  	else if (mechArray[1] === "/") {
+      result = parseFloat(mechArray[0])/parseFloat(mechArray[2]);
+    }
+  	else if (mechArray[1] === "*") {
+      result = parseFloat(mechArray[0])*parseFloat(mechArray[2]);
+    }
+
+};
+
+
+
+
+
+
+
+
+
+</script>    
+    </body>
+</html>
