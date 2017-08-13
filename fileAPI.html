@@ -9,40 +9,87 @@
       <div> 
       <input type="text" id="nums">
       </div>
+    <br>
+      <div>
+        <output id="history"> History:<br> </output>
+      </div>
 
     <script>
 
 var elInput= document.getElementById("nums");
+
+var check = 0;
 var mechArray = [0,"+",0];
 var numberArray = ["1","2","3","4","5","6","7","8","9","0"];
 var symbolArray = ["+","-","/","*"];
 var result;
+var alpha = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+
 
 var elOutput = document.getElementById("display");
+var elHistory = document.getElementById("history");
+
 
 elInput.addEventListener("keyup", function(e){
-    
+
+
+  var lastValue = elInput.value.charAt(elInput.value.length - 1);
+  
+  alpha.some(function(e){
+    if(lastValue === e) {
+      
+      alert("Enter digits!")
+      elInput.value = elInput.value.slice(0, -1);
+      //elInput.value.charAt(elInput.value.length - 1);
+      
+    }
+  })
 
   numberArray.some(function(no){
     if(e.key === no){
       mechArray[2] = elInput.value; 
+      elHistory.value += e.key;
+      check = 0;
     }
   })
 
   symbolArray.some(function(symb) {
 
     if(e.key === symb) {
+      
       cal();
       console.log(result)
       mechArray[0] = result;
       mechArray[1] = e.key;
       mechArray[2] = 0;
       elInput.value="";
+      elHistory.value += e.key;
       
-    }
+      
+      if(check == 1) {
+        elHistory.value = elHistory.value.slice(0, elHistory.value.length - 2) + elHistory.value.slice(elHistory.value.length-1);
+      }
+
+      check = 1;
+
+      //console.log(elHistory.value.charAt(elHistory.value.length-2));
+
+      
+    
+    };
+  });
 
 
-  })
+  if(e.keyCode === 13) {
+    cal();
+    console.log(result)
+    mechArray[0] = result;
+    mechArray[2] = 0;
+    elInput.value="";
+    //elHistory.value += "=";
+    
+  }
+  
 
   /*
   //elInput.value != "" ? elOutput.value = elInput.value : elOutput.value = e.key
@@ -50,12 +97,11 @@ elInput.addEventListener("keyup", function(e){
   result != undefined ? elOutput.value = result : elOutput.value = e.key
   
   */
-console.log(mechArray)
+  result != undefined ? elOutput.value = result : elOutput.value;
+  //elHistory.value += e.key;
+  console.log(mechArray)
 
 })
-
-
-
 
 
 function cal() {
@@ -74,14 +120,6 @@ function cal() {
     }
 
 };
-
-
-
-
-
-
-
-
 
 </script>    
     </body>
