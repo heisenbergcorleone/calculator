@@ -63,7 +63,7 @@ elInput.addEventListener("keyup", function(e){
   if(e.keyCode === 8) {
     elHistory.value = elHistory.value.slice(0, -1);
     if(elInput.value == "") {
-      mechArray[2] = 0;
+      mechArray[2] = "";
       check = 1;
     } else {
       mechArray[2] = elInput.value;
@@ -75,37 +75,57 @@ elInput.addEventListener("keyup", function(e){
 
     if(e.key === symb) {
       
-      cal();
-      console.log(result)
-      mechArray[0] = result;
-      mechArray[1] = e.key;
-      mechArray[2] = 0;
-      elInput.value="";
-      elHistory.value += e.key;
-      
-      
-      if(check == 1) {
+      if(mechArray[2] == "") {
+        mechArray[1] = e.key;
+        elInput.value = "";
+        elHistory.value += e.key;
+
+        if(check == 1) {
         elHistory.value = elHistory.value.slice(0, elHistory.value.length - 2) + elHistory.value.slice(elHistory.value.length-1);
+        }
+        
       }
 
+      if (mechArray[2] != ""){
+
+        cal();
+        console.log(result)
+        mechArray[0] = result;
+        mechArray[1] = e.key;
+        mechArray[2] = "";
+        elInput.value = "";
+        elHistory.value += e.key;
+
+      }
+      
       check = 1;
       typeOfInput = "symbol";
       //console.log(elHistory.value.charAt(elHistory.value.length-2));
 
-      
-    
     };
   });
 
 
   if(e.keyCode === 13) {
-    cal();
-    console.log(result)
-    mechArray[0] = result;
-    mechArray[2] = 0;
-    elInput.value="";
-    //elHistory.value += "=";
-    
+    if (mechArray[2] == "") {
+      mechArray[1] = "=";
+      elInput.value = "";
+      elHistory.value += "=";
+
+      if(check == 1) {
+        elHistory.value = elHistory.value.slice(0, elHistory.value.length - 2) + elHistory.value.slice(elHistory.value.length-1);
+      }
+
+    } else if (mechArray[2] != ""){
+      cal();
+      console.log(result)
+      mechArray[0] = result;
+      mechArray[1] = "=";
+      mechArray[2] = "";
+      elInput.value="";
+      elHistory.value += "=";
+    }
+    check = 1;
   };
   
 
