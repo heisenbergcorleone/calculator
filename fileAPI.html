@@ -24,7 +24,7 @@ var numberArray = ["1","2","3","4","5","6","7","8","9","0"];
 var symbolArray = ["+","-","/","*"];
 var result;
 var alpha = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-
+var typeOfInput;
 
 var elOutput = document.getElementById("display");
 var elHistory = document.getElementById("history");
@@ -37,7 +37,7 @@ elInput.addEventListener("keyup", function(e){
   
   alpha.some(function(e){
     if(lastValue === e) {
-      
+
       alert("Enter digits!")
       elInput.value = elInput.value.slice(0, -1);
       //elInput.value.charAt(elInput.value.length - 1);
@@ -45,13 +45,31 @@ elInput.addEventListener("keyup", function(e){
     }
   })
 
+  
+  
+
   numberArray.some(function(no){
     if(e.key === no){
+
+      //console.log(e.keyCode);
       mechArray[2] = elInput.value; 
       elHistory.value += e.key;
       check = 0;
+      typeOfInput = "number";
     }
-  })
+    
+  });
+
+  if(e.keyCode === 8) {
+    elHistory.value = elHistory.value.slice(0, -1);
+    if(elInput.value == "") {
+      mechArray[2] = 0;
+      check = 1;
+    } else {
+      mechArray[2] = elInput.value;
+    }
+  };
+
 
   symbolArray.some(function(symb) {
 
@@ -71,7 +89,7 @@ elInput.addEventListener("keyup", function(e){
       }
 
       check = 1;
-
+      typeOfInput = "symbol";
       //console.log(elHistory.value.charAt(elHistory.value.length-2));
 
       
@@ -88,7 +106,7 @@ elInput.addEventListener("keyup", function(e){
     elInput.value="";
     //elHistory.value += "=";
     
-  }
+  };
   
 
   /*
@@ -120,6 +138,9 @@ function cal() {
     }
 
 };
+
+
+
 
 </script>    
     </body>
