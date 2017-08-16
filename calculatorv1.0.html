@@ -19,19 +19,27 @@
 var elInput= document.getElementById("nums");
 
 var check = 0;
-var mechArray = [0,"+",0];
+var mechArray = [0,"+",""];
 var numberArray = ["1","2","3","4","5","6","7","8","9","0"];
 var symbolArray = ["+","-","/","*"];
 var result;
 var alpha = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-var typeOfInput;
-
+var fxValue = 0;
 var elOutput = document.getElementById("display");
 var elHistory = document.getElementById("history");
 
 
 elInput.addEventListener("keyup", function(e){
+  //  decX = mechArray[0].length -1 -mechArray[0].indexOf(".")
+  
+/*
+  if((mechArray[0].indexOf(".") != "-1") && (mechArray[2].indexOf(".") != "-1" )) {
 
+    var decX = mechArray[0].length -1 - mechArray[0].indexOf(".");
+    var decY = mechArray[1].length -1 - mechArray[1].indexOf(".");
+    console.log(decX , decY);
+  }
+*/
 
   var lastValue = elInput.value.charAt(elInput.value.length - 1);
   
@@ -40,8 +48,6 @@ elInput.addEventListener("keyup", function(e){
 
       alert("Enter digits!")
       elInput.value = elInput.value.slice(0, -1);
-      //elInput.value.charAt(elInput.value.length - 1);
-      
     }
   })
 
@@ -55,7 +61,6 @@ elInput.addEventListener("keyup", function(e){
       mechArray[2] = elInput.value; 
       elHistory.value += e.key;
       check = 0;
-      typeOfInput = "number";
     }
     
   });
@@ -87,21 +92,10 @@ elInput.addEventListener("keyup", function(e){
       }
 
       if (mechArray[2] != ""){
-
-        cal();
-        console.log(result)
-        mechArray[0] = result;
-        mechArray[1] = e.key;
-        mechArray[2] = "";
-        elInput.value = "";
-        elHistory.value += e.key;
-
+         run(e);
       }
       
       check = 1;
-      typeOfInput = "symbol";
-      //console.log(elHistory.value.charAt(elHistory.value.length-2));
-
     };
   });
 
@@ -117,29 +111,37 @@ elInput.addEventListener("keyup", function(e){
       }
 
     } else if (mechArray[2] != ""){
-      cal();
-      console.log(result)
-      mechArray[0] = result;
-      mechArray[1] = "=";
-      mechArray[2] = "";
-      elInput.value="";
-      elHistory.value += "=";
+      run(e,"=");
     }
     check = 1;
   };
   
-
-  /*
-  //elInput.value != "" ? elOutput.value = elInput.value : elOutput.value = e.key
-  elOutput.value = result;
-  result != undefined ? elOutput.value = result : elOutput.value = e.key
-  
-  */
   result != undefined ? elOutput.value = result : elOutput.value;
-  //elHistory.value += e.key;
   console.log(mechArray)
 
 })
+
+
+function run (e,arg) {
+  cal();
+  console.log(result);
+  mechArray[0] = result;
+  if(arg == "=") {
+    mechArray[1] = "=";//e.key
+    mechArray[2] = "";
+    elInput.value = "";
+    elHistory.value += "=";
+
+  } else if (arg == undefined) {
+    mechArray[1] = e.key;//e.key
+    mechArray[2] = "";
+    elInput.value = "";
+    elHistory.value += e.key;
+  }
+  
+};
+
+
 
 
 function cal() {
