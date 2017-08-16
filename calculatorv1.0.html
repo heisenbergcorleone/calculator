@@ -30,17 +30,7 @@ var elHistory = document.getElementById("history");
 
 
 elInput.addEventListener("keyup", function(e){
-  //  decX = mechArray[0].length -1 -mechArray[0].indexOf(".")
   
-/*
-  if((mechArray[0].indexOf(".") != "-1") && (mechArray[2].indexOf(".") != "-1" )) {
-
-    var decX = mechArray[0].length -1 - mechArray[0].indexOf(".");
-    var decY = mechArray[1].length -1 - mechArray[1].indexOf(".");
-    console.log(decX , decY);
-  }
-*/
-
   var lastValue = elInput.value.charAt(elInput.value.length - 1);
   
   alpha.some(function(e){
@@ -92,7 +82,14 @@ elInput.addEventListener("keyup", function(e){
       }
 
       if (mechArray[2] != ""){
-         run(e);
+
+        cal();
+        console.log(result)
+        mechArray[0] = result;8
+        mechArray[1] = e.key;
+        mechArray[2] = "";
+        elInput.value = "";
+        elHistory.value += e.key;
       }
       
       check = 1;
@@ -111,7 +108,14 @@ elInput.addEventListener("keyup", function(e){
       }
 
     } else if (mechArray[2] != ""){
-      run(e,"=");
+      
+      cal();
+      console.log(result)
+      mechArray[0] = result;
+      mechArray[1] = "=";
+      mechArray[2] = "";
+      elInput.value="";
+      elHistory.value += "=";
     }
     check = 1;
   };
@@ -122,32 +126,11 @@ elInput.addEventListener("keyup", function(e){
 })
 
 
-function run (e,arg) {
-  cal();
-  console.log(result);
-  mechArray[0] = result;
-  if(arg == "=") {
-    mechArray[1] = "=";//e.key
-    mechArray[2] = "";
-    elInput.value = "";
-    elHistory.value += "=";
-
-  } else if (arg == undefined) {
-    mechArray[1] = e.key;//e.key
-    mechArray[2] = "";
-    elInput.value = "";
-    elHistory.value += e.key;
-  }
-  
-};
-
-
-
-
 function cal() {
 
     if(mechArray[1] === "+") {
       result = parseFloat(mechArray[0])+parseFloat(mechArray[2]);
+      
     }
   	else if (mechArray[1] === "-") {
       result = parseFloat(mechArray[0])-parseFloat(mechArray[2]);
