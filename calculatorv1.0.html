@@ -3,6 +3,9 @@
     <head></head>
     <body>
       <div>
+        <output id="history">History:</output><br>
+      </div><br>
+      <div>
        <output id="display">Calculator 1.0</output> 
       </div>
       <br>
@@ -10,13 +13,23 @@
       <input type="text" id="nums">
       </div>
     <br>
-      <div>
-        <output id="history"> History:<br> </output>
-      </div>
+    <div>
+      <button onclick="buttonFun(this)">7</button> &nbsp <button onclick="buttonFun(this)">8</button> &nbsp <button onclick="buttonFun(this)">9</button> &nbsp <button onclick="buttonFun(this)">/</button>
+    </div><br>
+    <div>
+      <button onclick="buttonFun(this)">4</button> &nbsp <button onclick="buttonFun(this)">5</button> &nbsp <button onclick="buttonFun(this)">6</button> &nbsp <button onclick="buttonFun(this)">*</button>
+    </div><br>
+    <div>
+      <button onclick="buttonFun(this)">1</button> &nbsp <button onclick="buttonFun(this)">2</button> &nbsp <button onclick="buttonFun(this)">3</button> &nbsp <button onclick="buttonFun(this)">-</button>
+    </div><br>
 
+      <button onclick="buttonFun(this)"  >0</button> &nbsp <button onclick="buttonFun(this)" value = "13">=</button> &nbsp <button onclick="buttonFun(this)">+</button> &nbsp <button onclick="buttonFun(this)" value = "110">.</button>
+      <br><br>
+    <div><button onclick="buttonFun(this)" value = "8" >BS</button> &nbsp &nbsp<button onclick="reset()">Reset</button></div>  
     <script>
 
 var elInput= document.getElementById("nums");
+var elButton = document.getElementsByClassName("buttons");
 
 var check = 0;
 var mechArray = [0,"+",""];
@@ -29,12 +42,47 @@ var elOutput = document.getElementById("display");
 var elHistory = document.getElementById("history");
 var checkLastDecimal = 0;
 
+function reset() {
+  check = 0;
+  mechArray = [0,"+",""];
+  result = undefined;
+  once = false;
+  checkLastDecimal = 0;
+  elHistory.value = "History:";
+  elInput.value = "";
+  elOutput.value = "Calculator 1.0";
+}
+
+
+function buttonFun(elem) {
+  var e = {key: elem.innerHTML,
+          keyCode: elem.value
+          };
+          
+  if(e.keyCode == 8) {
+    elInput.value = elInput.value.slice(0,-1);
+  } else if (e.keyCode == 13) {
+  } 
+  else {
+    elInput.value += e.key;
+  }
+  
+  data(e);
+};
+
+
+
 elInput.addEventListener("keyup", function(e){
+  data(e);
+})
+
+
+function data (e) {
   
   var lastValue = elInput.value.charAt(elInput.value.length - 1);
   
   alpha.some(function(e){
-    if(lastValue === e) {
+    if(lastValue == e) {
 
       alert("Enter digits!")
       elInput.value = elInput.value.slice(0, -1);
@@ -45,13 +93,17 @@ elInput.addEventListener("keyup", function(e){
     if(e.key === no){
       mechArray[2] = elInput.value; 
       elHistory.value += e.key;
+      //console.log("this works")
       check = 0;
     }
     
   });
 
-  if(e.keyCode === 8) {
-    elHistory.value = elHistory.value.slice(0, -1);
+  if(e.keyCode == 8) {
+    
+    if(elHistory.value != "History:"){
+      elHistory.value = elHistory.value.slice(0, -1);
+    }
     if(elInput.value == "") {
       mechArray[2] = "";
       check = 1;
@@ -63,7 +115,7 @@ elInput.addEventListener("keyup", function(e){
 
   symbolArray.some(function(symb) {
 
-    if(e.key === symb) {
+    if(e.key == symb) {
       
       if(mechArray[2] == "") {
         mechArray[1] = e.key;
@@ -94,7 +146,7 @@ elInput.addEventListener("keyup", function(e){
   });
 
 
-  if(e.keyCode === 13) {
+  if(e.keyCode == 13) {
     if (mechArray[2] == "") {
       mechArray[1] = "=";
       elInput.value = "";
@@ -119,7 +171,7 @@ elInput.addEventListener("keyup", function(e){
     check = 1;
   };
 
-  if(e.keyCode === 110) {
+  if(e.keyCode == 110) {
     checkLastDecimal += 1;
     if(once == false) {
     elHistory.value += ".";
@@ -134,8 +186,7 @@ elInput.addEventListener("keyup", function(e){
   result != undefined ? elOutput.value = result : elOutput.value;
   console.log(mechArray)
 
-})
-
+}
 
 
 function fixDecimal () {
@@ -173,8 +224,6 @@ function calculate(store) {
     }
 
 };
-
-
 
 
 </script>    
