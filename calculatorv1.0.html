@@ -24,10 +24,10 @@ var numberArray = ["1","2","3","4","5","6","7","8","9","0"];
 var symbolArray = ["+","-","/","*"];
 var result;
 var alpha = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-var fxValue = 0;
+var once = false;
 var elOutput = document.getElementById("display");
 var elHistory = document.getElementById("history");
-
+var checkLastDecimal = 0;
 
 elInput.addEventListener("keyup", function(e){
   
@@ -41,13 +41,8 @@ elInput.addEventListener("keyup", function(e){
     }
   })
 
-  
-  
-
   numberArray.some(function(no){
     if(e.key === no){
-
-      //console.log(e.keyCode);
       mechArray[2] = elInput.value; 
       elHistory.value += e.key;
       check = 0;
@@ -83,13 +78,15 @@ elInput.addEventListener("keyup", function(e){
 
       if (mechArray[2] != ""){
 
-        cal();
+        fixDecimal();
         console.log(result)
-        mechArray[0] = result;8
+        mechArray[0] = result;
         mechArray[1] = e.key;
         mechArray[2] = "";
         elInput.value = "";
         elHistory.value += e.key;
+        once = false;
+        checkLastDecimal = 0;
       }
       
       check = 1;
@@ -109,37 +106,70 @@ elInput.addEventListener("keyup", function(e){
 
     } else if (mechArray[2] != ""){
       
-      cal();
+      fixDecimal();
       console.log(result)
       mechArray[0] = result;
       mechArray[1] = "=";
       mechArray[2] = "";
       elInput.value="";
       elHistory.value += "=";
+      once = false;
+      checkLastDecimal = 0;
     }
     check = 1;
   };
-  
+
+  if(e.keyCode === 110) {
+    checkLastDecimal += 1;
+    if(once == false) {
+    elHistory.value += ".";
+    once = true;
+    }
+    if(checkLastDecimal > 1) {
+    alert("Do not enter the decimal twice!")
+    elInput.value = elInput.value.slice(0, -1);
+    }
+}
+
   result != undefined ? elOutput.value = result : elOutput.value;
   console.log(mechArray)
 
 })
 
 
-function cal() {
 
+function fixDecimal () {
+    var x = mechArray[0].toString();
+    var y =  mechArray[2].toString();
+
+    var store = 0;
+    var decX = 0;
+    var decY = 0;
+
+    if(x.indexOf(".") != -1) {
+      decX = x.length - 1 - x.indexOf(".");
+    }
+    if(y.indexOf(".") != -1) {
+      decY = y.length - 1 - y.indexOf(".");
+    }
+    decX >= decY ? store = decX : store = decY;
+    calculate(store);
+}
+
+
+function calculate(store) {
+    
     if(mechArray[1] === "+") {
-      result = parseFloat(mechArray[0])+parseFloat(mechArray[2]);
-      
+      result = (parseFloat(mechArray[0])+parseFloat(mechArray[2])).toFixed(store); 
     }
   	else if (mechArray[1] === "-") {
-      result = parseFloat(mechArray[0])-parseFloat(mechArray[2]);
+      result = (parseFloat(mechArray[0])-parseFloat(mechArray[2])).toFixed(store);
     }
   	else if (mechArray[1] === "/") {
-      result = parseFloat(mechArray[0])/parseFloat(mechArray[2]);
+      result = (parseFloat(mechArray[0])/parseFloat(mechArray[2]));
     }
   	else if (mechArray[1] === "*") {
-      result = parseFloat(mechArray[0])*parseFloat(mechArray[2]);
+      result = (parseFloat(mechArray[0])*parseFloat(mechArray[2]));
     }
 
 };
