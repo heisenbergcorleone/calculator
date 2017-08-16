@@ -25,10 +25,11 @@
 
       <button onclick="buttonFun(this)"  >0</button> &nbsp <button onclick="buttonFun(this)" value = "13">=</button> &nbsp <button onclick="buttonFun(this)">+</button> &nbsp <button onclick="buttonFun(this)" value = "110">.</button>
       <br><br>
-    <div><button onclick="buttonFun(this)" value = "8" >BS</button> &nbsp &nbsp<button onclick="reset()">Reset</button></div>  
+    <div><button onclick="buttonFun(this)" value = "8" >Backspace</button> &nbsp &nbsp<button onclick="reset()">Reset</button></div>  
     <script>
 
 var elInput= document.getElementById("nums");
+elInput.value="";
 var elButton = document.getElementsByClassName("buttons");
 
 var check = 0;
@@ -41,6 +42,7 @@ var once = false;
 var elOutput = document.getElementById("display");
 var elHistory = document.getElementById("history");
 var checkLastDecimal = 0;
+
 
 function reset() {
   check = 0;
@@ -95,21 +97,25 @@ function data (e) {
       elHistory.value += e.key;
       //console.log("this works")
       check = 0;
+      
     }
     
   });
 
   if(e.keyCode == 8) {
     
-    if(elHistory.value != "History:"){
-      elHistory.value = elHistory.value.slice(0, -1);
-    }
+    if(check == "0") {
+      elHistory.value = elHistory.value.slice(0,-1);
+    };
+
     if(elInput.value == "") {
       mechArray[2] = "";
       check = 1;
+     
     } else {
       mechArray[2] = elInput.value;
     }
+    
   };
 
 
