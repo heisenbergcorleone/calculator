@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<div>
+<input type="text" id="num"><br>
+<output type = "text" id="out">Answer:</output><br>
+<output type = "text" id = "equation"></output>
+</div>
+
+        
+<script>
+
+var elInput = document.getElementById("num");
+var elOutput = document.getElementById("out");
+var eldisplay = document.getElementById("equation");
+var numbers = ["1","2","3","4","5","6","7","8","9","0"];
+var alpha = [" ","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+var leftside; var rightside; var mid;
+var j = 0; var stopeverthing = false;
+var numArray = []; var done = false;
+
+elInput.addEventListener("keyup", function (e) {
+    
+    var lastValue = elInput.value.charAt(elInput.value.length -1);
+    alpha.some(function(e){
+        if(lastValue == e) {
+            alert("Enter digits!");
+            elInput.value = elInput.value.slice(0, -1);
+        } 
+    });
+
+    if(e.keyCode == 13 && elInput.value != "") {
+        var stringVal = "("+elInput.value+")";
+        eldisplay.innerHTML += stringVal + "<br>" ;
+        console.log(stringVal);
+
+        for(var i = 0 ; i < stringVal.length ; i++) {
+        if(stringVal.charAt(i) == ")" && stringVal.charAt(i+1) == "(") {
+            stringVal = stringVal.slice(0,i+1)+"*"+stringVal.slice(i+1,stringVal.length);
+            console.log(stringVal);
+            eldisplay.innerHTML += stringVal + "<br>";
+            };
+        if(stringVal.charAt(i) == ")") {
+            numbers.some(function (e) {
+                if(stringVal.charAt(i+1) == e) {
+                    stringVal = stringVal.slice(0,i+1)+"*"+stringVal.slice(i+1,stringVal.length)
+                    console.log(stringVal);
+                    eldisplay.innerHTML += stringVal + "<br>";
+                }
+            })
+        };
+        if(stringVal.charAt(i) == "(") {
+            numbers.some(function(e){
+                if(stringVal.charAt(i-1) == e) {
+                    
+                    stringVal = stringVal.slice(0,i)+"*"+stringVal.slice(i,stringVal.length)
+                    console.log(stringVal);
+                    eldisplay.innerHTML += stringVal + "<br>";
+                }
+            })
+        };
+        
+        };
+        var stringLength = stringVal.length;
+
+        var leftBrac = 0; var rightBrac = 0;
+       
+        for(var i = 0 ; i < stringLength ; i++) {
+            if(stringVal.charAt(i) == "(") {
+                leftBrac +=1 ;
+            }
+            if(stringVal.charAt(i) == ")") {
+                rightBrac +=1;
+            }
+        };
+
+        
+        
+
+
+
+        var answer; var poslefBrac = 0; var posrigBrac = 0; var handleData = 0;
+       
+       
+        if(leftBrac == rightBrac) {
+            
+             for(var q = 0 ; q < leftBrac; q++) {
+                    if(!stopeverthing) {                
+                for(var i = 0 ; i < stringLength ; i++) {
+                    if(stringVal.charAt(i) == "(") {
+                        poslefBrac = i;
+                        
+                    };
+                        
+                };
+
+                for (var i = stringLength-1; i > poslefBrac ; i--) {
+                    if(stringVal.charAt(i) == ")" ) {
+                        posrigBrac = i;
+                        
+                    }
+                }
+
+                 handleData = stringVal.slice(poslefBrac+1,posrigBrac);
+                console.log("handle data :"+handleData);
+                check(handleData);
+
+                leftside = stringVal.slice(0,poslefBrac);
+                mid = numArray[0];
+                rightside = stringVal.slice(posrigBrac+1,stringLength);
+                answer = leftside+mid+rightside;
+                stringVal = answer;
+                stringLength = stringVal.length;
+                j = 0;
+                numArray = [];
+                console.log(stringVal);
+                eldisplay.innerHTML += stringVal + "<br>" + "<br>";
+                
+            }
+            };
+
+        } else {
+            console.log("check the number of brackets in your equation");
+        };
+        stopeverthing = false;
+        leftside; rightside; mid;
+        j = 0; 
+        numArray = [];
+        if(done){
+            elInput.value = "";
+             done = false;
+            elOutput.innerHTML = "Answer: " + stringVal;
+        };
+        
+    };
+
+  
+
+});
+
+
+
+function check(x){
+  var fel = x.charAt(0);
+  var sel = x.charAt(x.length - 1);
+  
+  if (fel == "/" || fel == "*" ) {
+	alert("error in equation: a math operator after opening the bracket");
+    stopeverthing = true;
+  }
+  else if (sel == "+" || sel == "-" || sel == "/" || sel == "*") {
+  	alert("error in equation: a math operator before closing the bracket");
+      stopeverthing = true;
+  }
+  else {
+  	 doubleSigns(x);
+  }
+  
+};
+
+function doubleSigns (x) {
+  var prevSymb = true;
+	for(var i = 0 ; i < x.length; i++){
+    	if(x.charAt(i) == "+" || x.charAt(i) == "-" || x.charAt(i) == "*" || x.charAt(i) == "/"){
+        	if(x.charAt(i+1) == "/" || x.charAt(i+1) == "*") {
+            	alert(" '/' and '*' shouldn't be there after any operator");
+              	prevSymb = false;
+                stopeverthing = true;
+                break;
+            }
+         	 	
+        }
+      	
+    }
+  
+  if(prevSymb) {
+  	thirdSymbol(x);
+  }
+};
+
+
+
+
+
+function thirdSymbol(x) {
+	var val;
+  	for (var i = 0 ; i <= x.length; i++) {
+      if(x.charAt(i) == "+" || x.charAt(i) == "/" || x.charAt(i) == "*" || x.charAt(i) == "-") {
+        val +=1;
+        if(val == 3) {
+          break;
+        };
+      }
+      else {
+        val = 0;
+      }
+  	}
+  
+    if(val != 3){
+    stringToArray(x);
+    } else {
+    alert("3 math operators entered")
+    stopeverthing = true;
+    }
+};
+
+
+
+
+function stringToArray (data) {
+  var x = 0;
+  for(var i = 0; i <= data.length; i++) {
+  	if((data.charAt(i) == "+" || data.charAt(i) == "-" || data.charAt(i) == "*" || data.charAt(i) == "/" || data.charAt(i) == "") && data.slice(x,i) != "" ) {
+    	numArray.push(data.slice(x,i));
+      	
+      	if(data.charAt(i) != ""){
+          numArray.push(data.charAt(i))
+           
+          
+        };
+      	x = i+1;
+    };
+  };
+  console.log(numArray);
+  calculateData();
+};
+
+
+
+function calculateData() {
+  var arraylength = numArray.length;
+  
+	for(j = 0; j < arraylength ; j++) {
+      muldiv(j,"/");
+    };
+  	for(j = 0; j < arraylength ; j++) {
+      muldiv(j,"*");
+    };
+  
+  plusminus();
+  
+};
+
+function muldiv (i,sign) {
+  
+	if(numArray[i] == sign) {
+        	
+          	var fn = parseFloat(numArray[i-1]);
+            var sn = parseFloat(numArray[i+1]);
+      
+      		if (sign == "/") {
+         		var fnandsn = fn/sn;
+            } else if (sign == "*") {
+              var fnandsn = fn*sn;
+            }
+      		
+          	numArray[i+1] = fnandsn.toString();
+            numArray.splice(i-1,2);
+          	j = j - 2;
+          	nlength = numArray.length;
+          	console.log(numArray);
+          	
+        };
+  
+};
+
+function plusminus () {
+  
+	for (var i = 0 ; i < numArray.length; i++) {
+      if(numArray[i] == "+" || numArray[i] == "-") {
+        
+    	var fe = parseFloat(numArray[i-1]);
+      	var se = parseFloat(numArray[i+1]);
+        
+        if(numArray[i] == "+") {
+        	var result = (fe+se).toString();
+        } else if (numArray[i] == "-") {
+          var result = (fe-se).toString();
+        }
+        numArray[i+1] = result;
+        numArray.splice(i-1,2);
+        i = i - 2;
+        console.log(numArray);
+    }
+   }
+   done = true;
+};
+
+
+
+
+
+</script>
+</body>
+</html>
